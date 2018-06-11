@@ -24,6 +24,16 @@ Our models also uses pretrained vectors (trained with Word2vec), which can be do
 Further information about dataset and vectors can be found in the report.
 
 
+## Setup
+
+Our code has been written in Python 3 (v3.5.4). You also need the following modules:
+
+- Anaconda 4.3
+- Tensorflow 1.4.0
+- Keras 2.1.6
+- Keras-contrib 0.0.2
+
+
 ## Repository structure
 
 This repository is structured as follows:
@@ -33,19 +43,10 @@ This repository is structured as follows:
   - active.py: active learning functions and main algorithm.
   - utils.py: support functions for the models.
   - general.py: script with functions to convert bibtex files into simil-CoNLL datasets.
-- runActiveLearning.py: script to run our active learning model.
-- runCNN.py: script to run our CNN model only.
+- runActiveLearning.py: script to run our active learning algorithm with the CNN-CNN-LSTM model.
+- runCNN.py: script to run the CNN-CNN-LSTM model only.
+- runBiLSTM.py: script to run the BiLSTM model.
 - MS_Project_Martinelli.pdf: project report.
-
-
-## Setup
-
-Our code has been written in Python 3 (v3.5.4). You also need the following modules:
-
-- Anaconda 4.3
-- Tensorflow 1.4.0
-- Keras 2.1.6
-- Keras-contrib 0.0.2
 
 
 ## Credits and license
