@@ -98,7 +98,7 @@ def BiLSTM_model(filename, train, output,
 
         :param folder_path: Path to the directory storing all to-be-generated files
         :param gen_confusion_matrix: Boolean value. Generated confusion matrices or not.
-        :parm returnModel: if True returns the Keras model object, otherwise return best results 
+        :parm return_model: if True returns the Keras model object, otherwise return best results 
 
 
         :return: The classification scores for both tasks (default for compatibility). If returnModel = True, returns model object for further computation
@@ -263,7 +263,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
               y_train, y_test, ind2label, maxChar, char2ind, validation=False, X_valid=None, y_valid=None,
               pretrained_embedding="", word_embedding_size=100, char_embedding_size=50,
               lstm_hidden=32, nbr_epochs=25, batch_size=128, dropout=0.5, optimizer='rmsprop', early_stopping_patience=-1,
-              folder_path="CNN_results", gen_confusion_matrix=False, returnModel = False
+              folder_path="CNN_results", gen_confusion_matrix=False, return_model = False
              ): 
     """
         Build, train and test the CNN-CNN-LSTM Keras model. Works for multi-tasking learning.
@@ -276,8 +276,8 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
         :param filename: File to redirect the printing
         :param train: Boolean if the model must be trained or not. If False, the model's wieght are expected to be stored in "folder_path/filename/filename.h5" 
         
-        :param X_train: Data to train the model
-        :param X_test: Data to test the model
+        :param X_train: Data to train the model. It must be a list of word and character indices.
+        :param X_test: Data to test the model. It must be a list of word and character indices.
         :param word2ind: Dictionary containing all words in the training data and a unique integer per word
         :param maxWords: Maximum number of words in a sequence
         
@@ -308,7 +308,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
 
         :param folder_path: Path to the directory storing all to-be-generated files
         :param gen_confusion_matrix: Boolean value. Generated confusion matrices or not.
-        :parm returnModel: if True returns the Keras model object, otherwise return best results 
+        :parm return_model: if True returns the Keras model object, otherwise return best results 
 
         :return: The classification scores for both tasks (default for compatibility). If returnModel = True, returns model object for further computation
     """    
@@ -458,7 +458,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
     print(end_string)
     
     # Returns model itself for further computation, otherwise best results
-    if returnModel:
+    if return_model:
         return model
     else:
         return best_results

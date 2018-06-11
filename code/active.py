@@ -92,7 +92,7 @@ def BiLSTM_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label,
               maxChar = maxChar, char_embedding_type = char_embedding_type, char2ind = char2ind, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, batch_size = batch_size, dropout = dropout, optimizer = optimizer, 
               nbr_epochs = nbr_epochs, early_stopping_patience = early_stopping_patience,
-              folder_path = folder_path, gen_confusion_matrix = False, returnModel = True
+              folder_path = folder_path, gen_confusion_matrix = False, return_model = True
             )   
             
     # HACK: optmizer weight length issue
@@ -216,7 +216,7 @@ def CNN_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label, maxChar, cha
               pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, nbr_epochs = nbr_epochs, batch_size = batch_size, dropout = dropout, 
               optimizer= optimizer, early_stopping_patience=-1,
-              folder_path="CNN_results", gen_confusion_matrix=False, returnModel = True
+              folder_path="CNN_results", gen_confusion_matrix=False, return_model = True
              )
         
     # HACK: optmizer weight length issue
@@ -353,7 +353,7 @@ def BiLSTM_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords,
               maxChar = maxChar, char_embedding_type = char_embedding_type, char2ind = char2ind, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, batch_size = batch_size, dropout = dropout, optimizer = optimizer, 
               nbr_epochs = nbr_epochs, early_stopping_patience = early_stopping_patience,
-              folder_path = folder_path, gen_confusion_matrix = False, returnModel = True
+              folder_path = folder_path, gen_confusion_matrix = False, return_model = True
             )   
         
     # HACK: optmizer weight length issue
@@ -473,10 +473,11 @@ def BiLSTM_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords,
     
     
 def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, ind2label, maxChar, char2ind, seed = 42, 
-              write_to_disk = False, verbose = False, 
+              write_to_disk = False, verbose = False, task = 1,
               pretrained_embedding="", word_embedding_size=100, char_embedding_size=50, 
               lstm_hidden=32, dropout=0.5, optimizer='rmsprop',
-              folder_path="CNN_results"
+              train = False, X_train = None, y_train = None, X_test = None, y_test = None,
+              nbr_epochs = 5, batch_size=128, early_stopping_patience=-1, folder_path="CNN_results"
              ):
     """
         The function selects references from the dataset according to their entropy uncertainy sampling score.
@@ -517,7 +518,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
               pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, nbr_epochs = nbr_epochs, batch_size = batch_size, dropout = dropout, 
               optimizer= optimizer, early_stopping_patience=-1,
-              folder_path="CNN_results", gen_confusion_matrix=False, returnModel = True
+              folder_path="CNN_results", gen_confusion_matrix=False, return_model = True
              )
     
     # HACK: optmizer weight length issue

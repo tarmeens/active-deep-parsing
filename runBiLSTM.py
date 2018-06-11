@@ -1,7 +1,7 @@
 """
     DHLAB - IC - EPFL
     
-    Run the script to train and validate the CNN-CNN-LSTM model on Task1, Task2, and Task3.
+    Run the script to train and validate the BiLSTM model on Task1, Task2, and Task3.
     
     author: Mattia Martinelli
     date: 08/06/2018
@@ -13,7 +13,6 @@ import sys
 sys.path.append("code/")  
 from models import *
 from utils import *
-
 
 # Load entire data
 X_train_w, y_train1_w, y_train2_w, y_train3_w 	= load_data("dataset/clean_train.txt")	# Training data
@@ -73,46 +72,42 @@ X_validation = [X_valid, X_valid_char]
 epoch = 15
 batch = 128
 dropout = 0.5
-lstm_size = 32
+lstm_size = 200
 
-model_folder = "CNN_model"
-
-# Train and validate model for task 1
 model_name = "task1"
-CNN_model(model_name, True,
+BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train1], [y_test1], [ind2label1],
     validation=True, X_valid=X_validation, y_valid=[y_valid1],
     pretrained_embedding=True, word_embedding_size=300,
-    maxChar=maxChar, char2ind=char2ind, char_embedding_size=100,
+    maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=-1, folder_path = model_folder 
+    gen_confusion_matrix=True, early_stopping_patience=15
     )
     
-# Train and validate model for task 2
 model_name = "task2"
-CNN_model(model_name, True,
+BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train2], [y_test2], [ind2label2],
-    validation=True, X_valid=X_validation, y_valid=[y_valid2],
+    validation=True, X_valid=X_validation, y_valid=[y_valid1],
     pretrained_embedding=True, word_embedding_size=300,
-    maxChar=maxChar, char2ind=char2ind, char_embedding_size=100,
+    maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=-1, folder_path = model_folder 
+    gen_confusion_matrix=True, early_stopping_patience=15
     )
     
-# Train and validate model for task 3
 model_name = "task3"
-CNN_model(model_name, True,
+BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train3], [y_test3], [ind2label3],
     validation=True, X_valid=X_validation, y_valid=[y_valid3],
     pretrained_embedding=True, word_embedding_size=300,
-    maxChar=maxChar, char2ind=char2ind, char_embedding_size=100,
+    maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=-1, folder_path = model_folder 
+    gen_confusion_matrix=True, early_stopping_patience=15
     )
-    
+
+
 
 
 print("Done.")

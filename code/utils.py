@@ -26,6 +26,7 @@ import time
 import sys
 import csv
 import itertools
+from shutil import copyfile
 
 from keras.callbacks import Callback
 from keras.preprocessing.sequence import pad_sequences
