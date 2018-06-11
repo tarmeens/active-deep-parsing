@@ -650,7 +650,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
     return value_to_return
 
     
-def CNN_ActiveModel(task, X_train_w, y_train_w, X_test_w, y_test_w, X_valid_w, y_valid_w, tag_init_min_th, nbr_iters, 
+def CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train_w, y_test_w, y_valid_w, tag_init_min_th, nbr_iters, 
                     nbr_epochs, query_mode, inc_perc = 0.03, word_embedding_size = 100, 
                     char_embedding_size = 50, pretrained_embedding="", folder_path="active_results", store_models = False):
     
@@ -687,7 +687,7 @@ def CNN_ActiveModel(task, X_train_w, y_train_w, X_test_w, y_test_w, X_valid_w, y
     
     # Check parameters
     assert(tag_init_min_th > 0)
-    assert(nbr_iters > 1)
+    assert(nbr_iters > 0)
     assert(inc_perc > 0 and inc_perc <= 1)
     
     if store_models:

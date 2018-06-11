@@ -48,5 +48,5 @@ toQuery_init = 50
 # Change the two parametes below to modify the behaviour of the algorithm.
 task = "task1"   # Must be "task1", "task2", or "task3"
 query_mode = "least"    # Must be "least", "most", "random", or "hybrid"
-CNN_ActiveModel(task, X_train_w, y_train1_w, X_test_w, y_test1_w, X_valid_w, y_valid1_w, tag_init_min_th, nbr_iters, 
-                    nbr_epochs, inc_perc = 0.03, folder_path = folder_path, query_mode = query_mode, pretrained_embedding=True, word_embedding_size=300, char_embedding_size=100, store_models = True)
+CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train1_w, y_test1_w, y_valid1_w, tag_init_min_th, nbr_iters, 
+                    nbr_epochs, query_mode, inc_perc = 0.03, folder_path = folder_path, pretrained_embedding=True, word_embedding_size=300, char_embedding_size=100, store_models = True)

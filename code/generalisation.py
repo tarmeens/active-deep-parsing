@@ -23,15 +23,18 @@ from pybtex.database import parse_file
 import glob
 sys.path.append("code/")  
 from utils import *
+from collections import defaultdict
 
 
 def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None, 
-                    blackList = None, mapping = None, seqStruct = None):
+                    encoding = "latex", mapping = None, seqStruct = None):
     """
         The function transforms a bibtex file in a simil-CoNLL dataset.
         In detail, it parses a bibtex file and returns lists similar to those returned by load_data (in utils.py).
         The lists can either dumped to txt file or not.
         For further information, please consult the report.
+        IMPORTANT NOTE: some bibtex files have characters that are not rendered correctly! Use "utf-8" if "latex" does not work.
+        Some files are not compatible with this function, as they contain strings that the parser cannot parse.
         
         The function can receive as parameters:
             - A blacklist of bibtex labels that must not be added to the dataset.
@@ -42,7 +45,7 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
         :param bibpath: input bibtex file path.
         :param writeToDisk: writes on disk the CoNLL file (only for Task 1).
         :param outpath: if writeToDisk = True, output CoNLL file path.
-        :param blackList: set of labels that must not be added to the dataset.
+        :param encoding: bibtex parser encoding, e.g. latex or utf-8.
         :param mapping: dictionary that maps bibtex labels in CoNLL labels.
         :param seqStruct: list that represents the label structure of the output references (ordering matters).
         
@@ -51,11 +54,6 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
     """
                   
     # DEFAULT STRUCTURES 
-    # Contains entry tags of bibtex that MUST NOT be added to the dataset (variable-length sequences)
-    if blackList == None:
-        blackList = set(["ENTRYTYPE", "ID", "ISSN", "ISSN-L", "bibdate", "bibsource", "abstract", "CODEN", "DOI", "journal-URL", 
-                     "fjournal", "XMLdata", "oldlabel", "acknowledgement", "MRnumber", "MRreviewer", "MRclass", "note", "owner", "language" 
-                    ])
     # Maps entry tags in bibtex to labels in dataset    
     if mapping == None:
         mapping = {"author":"author", "title":"title", "pages":"pagination", "year":"year", "journal": "publisher",
@@ -68,7 +66,7 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
     begin_line = '-DOCSTART- -X- -X- o\n\n'
     
     # Open input file and parse bibtex
-    with open(bibpath, encoding = "latex") as bibtex_file:
+    with open(bibpath, encoding = encoding) as bibtex_file:
         bib_data = parse_file(bibtex_file, bib_format="bibtex")
         
     X_w_out = []
@@ -85,8 +83,7 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
             for i, author in enumerate(bib_data.entries[key].persons['author']):
                 # Add 'and' if multiple authors
                 if i >= 1:
-                    line = "and" + " " + "author" + " o o" + "\n"
-                    f.write(line)
+                    seqMap["author"].append("and")
                 name = author.first_names + author.middle_names + author.prelast_names + author.last_names
                 # Split different part names
                 for name_part in name:
@@ -110,20 +107,20 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
                     # remove empty tokens
                     if token == "":
                         continue
-                    # Unknown number -> set to 0 so it will be converted in $NUM$ token when processed
-                    if (label == "month" or label == "year" or label == "month" or label == 'pagination' or label == 'volume' or label == 'tomo') \
-                    and "?" in token:
-                        token = 1 # TODO: replace with $NUM$
                     if k in mapping:
                         label = mapping[k]
                     else:
                         label = "o"
+                    # Unknown number -> set to 0 so it will be converted in $NUM$ token when processed
+                    if (label == "month" or label == "year" or label == "month" or label == 'pagination' or label == 'volume' or label == 'tomo') \
+                    and "?" in token:
+                        token = 1 # TODO: replace with $NUM$
                     seqMap[label].append(token)
                             
         # Append sequence 
         sequence_x = []
         sequence_y = []
-        for seq_label in sequence:
+        for seq_label in seqStruct:
             if seq_label in seqMap:
                 for token in seqMap[seq_label]:
                     sequence_x.append(token)
@@ -145,7 +142,7 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
                 if index == 0:
                     continue
                 for w, t in zip(ref_words, ref_tags):
-                    f.write(w + " " + t + " o o\r")
+                    f.write(str(w) + " " + str(t) + " o o\r")
                 f.write("\r")
             f.write("\n")
         
@@ -153,13 +150,14 @@ def bibtexToCoNLL(bibpath, writeToDisk = False, outpath = None,
 
 
     
-def multiBibtexToCoNLL(bib_folder, outpath, blackList = None, mapping = None, seqStruct = None):
+def multiBibtexToCoNLL(bib_folder, outpath, encoding = "latex", mapping = None, seqStruct = None):
     """
         The function maps multiple bibtex files to a single simil-CoNLL dataset.
+        IMPORTANT NOTE: some files are not compatible with this function, as they contain strings that the parser cannot parse.
         
         :param bib_folder: folder containg the input bibtex files.
         :param outpath:  output CoNLL file path.
-        :param blackList: set of labels that must not be added to the dataset.
+        :param encoding: bibtex parser encoding, e.g. latex or utf-8.
         :param mapping: dictionary that maps bibtex labels in CoNLL labels.
         :param seqStruct: list that represents the label structure of the output references (ordering matters).
         
@@ -167,7 +165,7 @@ def multiBibtexToCoNLL(bib_folder, outpath, blackList = None, mapping = None, se
         
     """
     # Load the datasets from input folder
-    bib_paths = glob.glob(bib_folder + "/*.txt")
+    bib_paths = glob.glob(bib_folder + "/*.bib")
     X_w_out = []
     y_w_out = []
     
@@ -176,7 +174,7 @@ def multiBibtexToCoNLL(bib_folder, outpath, blackList = None, mapping = None, se
     # Get sequences
     for bib_path in bib_paths:
         X_w_in, y_w_in = bibtexToCoNLL(bib_path, outpath = None, writeToDisk = False, 
-                                        blackList = blackList, mapping = mapping, seqStruct = seqStruct)
+                                        encoding = encoding, mapping = mapping, seqStruct = seqStruct)
         X_w_out += X_w_in[1:]
         y_w_out += y_w_in[1:]
 
@@ -193,7 +191,7 @@ def multiBibtexToCoNLL(bib_folder, outpath, blackList = None, mapping = None, se
             if index == 0:
                 continue
             for w, t in zip(ref_words, ref_tags):
-                f.write(w + " " + t + " o o\r")
+                f.write(str(w) + " " + str(t) + " o o\r")
             f.write("\r")
 
             
@@ -234,6 +232,6 @@ def merge(data_folder, outpath):
             if index == 0:
                 continue
             for w, t in zip(ref_words, ref_tags):
-                f.write(w + " " + t + " o o\r")
+                f.write(str(w) + " " + str(t) + " o o\r")
             f.write("\r")
             
