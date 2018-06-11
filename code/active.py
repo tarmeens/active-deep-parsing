@@ -814,12 +814,13 @@ def CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train_w, y_test_w, y
         toQuery = int(inc_perc * (num_labelled + num_unlabelled))
         
         # Get score over sequence entropy
-        to_label_index = CNN_query(iter_task, X_train_w_unlabelled, [X_unlabelled, X_unlabelled_char], y_unlabelled, word2ind, 
-                                   maxWords, [ind2label], maxChar, char2ind, toQuery, mode = query_mode, 
+        to_label_index = CNN_query(iter_task, X_train_w_unlabelled, [X_unlabelled, X_unlabelled_char], y_unlabelled, 
+                                   toQuery, query_mode, 
+                                   word2ind, maxWords, [ind2label], maxChar, char2ind,
                                    pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, 
                                    char_embedding_size = char_embedding_size, optimizer='rmsprop', write_to_disk = False, 
                                    folder_path=folder_path)
-        
+                                   
         # I don't need weights anymore
         # TODO: find a way to avoid writing/deletion on disk
         if not store_models and os.path.isfile(weights_path):
