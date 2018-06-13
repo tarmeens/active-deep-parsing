@@ -865,9 +865,9 @@ def CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train_w, y_test_w, y
               X_valid=[X_valid, X_valid_char], y_valid= [y_valid], folder_path=folder_path, gen_confusion_matrix=True)
     
     end_time = time.time()
-    print("\n\nTotal training time: " + str(end_time - start_time) + " s.")
+    print("\n\nTotal training time: " + str(end_time - start_time) + " s.\n\n")
+    print("Best F1 scores: ", f1_scores)
     closePrintToFile(file, stdout_original)
-    
     # Return list with best F1 scores of each iteration
     return f1_scores
 

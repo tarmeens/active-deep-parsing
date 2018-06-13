@@ -386,7 +386,6 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
         early_stopping = EarlyStopping(monitor=value_to_monitor, patience=nbr_epochs, mode='max')
         callbacks.append(early_stopping)
         
-    
     # Train
     if train:
         # Train the model. Keras's method argument 'validation_data' is referred as 'testing data' in this code.
@@ -406,7 +405,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
         
         # Best epoch results
         best_results = model_best_scores(classification_scores, best_epoch)
-
+        
     # HACK: optmizer weight length issue
     # https://github.com/keras-team/keras/issues/4044
     import h5py
