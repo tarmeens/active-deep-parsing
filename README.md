@@ -16,7 +16,7 @@ sets in a methodical manner. In this work, we show that an accuracy close to tha
 
 ## Dataset
 
-We work on a dataset of bibliography references from humanities literature, which has been taken from a [previous project](https://github.com/dhlab-epfl/LinkedBooksReferenceParsing) in our same tasks. The dataset is also provided in this repository whithin the compressed folder *dataset.tar.gz*. The archive contains three files (training, test, validation), which should be by default decompressed in a folder named *dataset*.  <br />
+We work on a dataset of bibliography references from humanities literature, which has been taken from a [previous project](https://github.com/dhlab-epfl/LinkedBooksReferenceParsing) in our same tasks. The dataset is also provided in this repository whithin the compressed folder *dataset.tar.gz*. The archive contains three files (training, test, validation) and should be by default decompressed in a folder named *dataset*.  <br />
 
 Our models can also be trained with word2vec pretrained vectors, which are not provided. 
 
