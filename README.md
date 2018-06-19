@@ -16,15 +16,14 @@ sets in a methodical manner. In this work, we show that an accuracy close to tha
 
 ## Dataset
 
-We work on a dataset of bibliography references from humanities literature, which can be downloaded [here](https://github.com/dhlab-epfl/LinkedBooksReferenceParsing). <br />
-The dataset is provided as a JSON file. It needs to be decompressed into three separeted datasets: train, test, and valid.
+We work on a dataset of bibliography references from humanities literature, which has been taken from a [previous project](https://github.com/dhlab-epfl/LinkedBooksReferenceParsing) in our same tasks. The dataset is also provided in this repository whithin the compressed folder *dataset.tar.gz*. The archive contains three files (training, test, validation), which should be by default decompressed in a folder named *dataset*.  <br />
 
-Our models also uses pretrained vectors (trained with Word2vec), which can be downloaded here.
+Our models can also be trained with word2vec pretrained vectors, which are not provided. 
 
-Further information about dataset and vectors can be found in the report.
+Further information on vectors and dataset can be found in the report.
 
 
-## Setup
+## Dependencies
 
 Our code has been written in Python 3 (v3.5.4). You also need the following modules:
 
@@ -32,6 +31,8 @@ Our code has been written in Python 3 (v3.5.4). You also need the following modu
 - Tensorflow 1.4.0
 - Keras 2.1.6
 - Keras-contrib 0.0.2
+- Sklearn : 0.19.1
+- Sklearn crfsuite : 0.3.6
 
 
 ## Repository structure
