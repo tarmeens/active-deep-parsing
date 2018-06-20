@@ -44,7 +44,7 @@ def BiLSTM_model(filename, train, output,
               word_embeddings=True, pretrained_embedding="", word_embedding_size=100,
               maxChar=0, char_embedding_type="", char2ind="", char_embedding_size=50,
               lstm_hidden=32, nbr_epochs=5, batch_size=32, dropout=0, optimizer='rmsprop', early_stopping_patience=-1,
-              folder_path="model_results", gen_confusion_matrix=False, return_model = False
+              folder_path="BiLSTM_model", print_to_file = True, gen_confusion_matrix=False, return_model = False
             ):    
     """
         Build, train and test a BiLSTM Keras model. Works for multi-tasking learning.
@@ -77,7 +77,7 @@ def BiLSTM_model(filename, train, output,
         :param y_valid: Optional. Validation dataset labels
 
         :param word_embeddings: Boolean value. Add word embeddings into the model.
-        :param pretrained_embedding: Use the pretrained word embeddings. 
+        :param pretrained_embedding: Use the pretrained word embeddings. Pretrained vectors must be located here: "dataset/pretrained_vectors"
                                      Three values: 
                                             - "":    Do not use pre-trained word embeddings (Default)
                                             - False: Use the pre-trained embedding vectors as the weights in the Embedding layer
@@ -97,8 +97,9 @@ def BiLSTM_model(filename, train, output,
         :param early_stopping_patience: Number of continuous tolerated epochs without improvement during training.
 
         :param folder_path: Path to the directory storing all to-be-generated files
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :param gen_confusion_matrix: Boolean value. Generated confusion matrices or not.
-        :parm return_model: if True returns the Keras model object, otherwise return best results 
+        :param return_model: if True returns the Keras model object, otherwise return best results 
 
 
         :return: The classification scores for both tasks (default for compatibility). If returnModel = True, returns model object for further computation
@@ -112,7 +113,8 @@ def BiLSTM_model(filename, train, output,
     filepath = folder_path+"/"+filename+"/"+filename
 
     # Set print outputs file
-    file, stdout_original = setPrintToFile("{0}.txt".format(filepath))    
+    if print_to_file:
+        file, stdout_original = setPrintToFile("{0}.txt".format(filepath))    
 
     # Model params
     nbr_words = len(word2ind)+1
@@ -247,9 +249,9 @@ def BiLSTM_model(filename, train, output,
             # Generate confusion matrices
             save_confusion_matrix(target, predictions,  list(ind2label[i].values()), "{0}_task_{1}_confusion_matrix_validation".format(filepath,str(i+1)))
 
-
     # Close file
-    closePrintToFile(file, stdout_original)
+    if print_to_file:
+        closePrintToFile(file, stdout_original)
     print(end_string)
 
      # Returns model itself for further computation, otherwise best results
@@ -263,7 +265,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
               y_train, y_test, ind2label, maxChar, char2ind, validation=False, X_valid=None, y_valid=None,
               pretrained_embedding="", word_embedding_size=100, char_embedding_size=50,
               lstm_hidden=32, nbr_epochs=25, batch_size=128, dropout=0.5, optimizer='rmsprop', early_stopping_patience=-1,
-              folder_path="CNN_results", gen_confusion_matrix=False, return_model = False
+              folder_path="CNN_results", print_to_file = True, gen_confusion_matrix=False, return_model = False
              ): 
     """
         Build, train and test the CNN-CNN-LSTM Keras model. Works for multi-tasking learning.
@@ -291,7 +293,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
         :param X_valid: Optional. Validation dataset
         :param y_valid: Optional. Validation dataset labels
 
-        :param pretrained_embedding: Use the pretrained word embeddings. 
+        :param pretrained_embedding: Use the pretrained word embeddings. Pretrained vectors must be located here: "dataset/pretrained_vectors"
                                      Three values: 
                                             - "":    Do not use pre-trained word embeddings (Default)
                                             - False: Use the pre-trained embedding vectors as the weights in the Embedding layer
@@ -307,6 +309,7 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
         :param early_stopping_patience: Number of continuous tolerated epochs without improvement during training.
 
         :param folder_path: Path to the directory storing all to-be-generated files
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :param gen_confusion_matrix: Boolean value. Generated confusion matrices or not.
         :parm return_model: if True returns the Keras model object, otherwise return best results 
 
@@ -320,7 +323,8 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
     filepath = folder_path+"/"+filename+"/"+filename
 
     # Set print outputs file
-    file, stdout_original = setPrintToFile("{0}.txt".format(filepath)) 
+    if print_to_file:
+        file, stdout_original = setPrintToFile("{0}.txt".format(filepath)) 
 
     nbr_words = len(word2ind)+1
     out_size = len(ind2label)+1
@@ -453,7 +457,8 @@ def CNN_model(filename, train, X_train, X_test, word2ind, maxWords,
 
 
     # Close file
-    closePrintToFile(file, stdout_original)
+    if print_to_file:
+        closePrintToFile(file, stdout_original)
     print(end_string)
     
     # Returns model itself for further computation, otherwise best results

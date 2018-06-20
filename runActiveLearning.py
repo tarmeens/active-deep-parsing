@@ -2,6 +2,7 @@
     DHLAB - IC - EPFL
     
     Run the script to execute the active learning algorithm with the CNN-CNN-LSTM model.
+    See below for hard-coded parameters.
     
     author: Mattia Martinelli
     date: 08/06/2018
@@ -21,13 +22,14 @@ X_test_w,  y_test1_w,  y_test2_w,  y_test3_w 	= load_data("dataset/clean_test.tx
 X_valid_w, y_valid1_w, y_valid2_w, y_valid3_w 	= load_data("dataset/clean_valid.txt")	# Validation data
 
 folder_path = "active_model"
-tag_init_min_th = 200
-nbr_iters = 15
-nbr_epochs = 15
+tag_init_min_th = 200 # Minimum number of tokens for each label.
+nbr_iters = 15 # Number of training  cycles
+nbr_epochs = 15 # Number of epochs for each training cycle (no early stopping)
+
 
 # In this example, the active learning algorithm runs on Task 1 and uses least confident (i.e. highest entropy) as an uncertainty sampling measure.
-# Change the two parametes below to modify the behaviour of the algorithm.
+# Change the two parameters below to modify model task and sampling metric of the algorithm.
 task = "task1"   # Must be "task1", "task2", or "task3"
 query_mode = "least"    # Must be "least", "most", "random", or "hybrid"
 CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train1_w, y_test1_w, y_valid1_w, tag_init_min_th, nbr_iters, 
-                    nbr_epochs, query_mode, inc_perc = 0.03, folder_path = folder_path, pretrained_embedding=True, word_embedding_size=300, char_embedding_size=100, store_models = True)
+                    nbr_epochs, query_mode, inc_perc = 0.03, folder_path = folder_path, pretrained_embedding="", word_embedding_size=300, char_embedding_size=100, store_models = True)

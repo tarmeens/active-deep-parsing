@@ -19,7 +19,6 @@ X_train_w, y_train1_w, y_train2_w, y_train3_w 	= load_data("dataset/clean_train.
 X_test_w,  y_test1_w,  y_test2_w,  y_test3_w 	= load_data("dataset/clean_test.txt")	# Testing data
 X_valid_w, y_valid1_w, y_valid2_w, y_valid3_w 	= load_data("dataset/clean_valid.txt")	# Validation data
 
-
 # Merge digits under the same word
 digits_word = "$NUM$" 
 X_train_w, X_test_w, X_valid_w = mergeDigits([X_train_w, X_test_w, X_valid_w], digits_word)
@@ -79,21 +78,21 @@ BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train1], [y_test1], [ind2label1],
     validation=True, X_valid=X_validation, y_valid=[y_valid1],
-    pretrained_embedding=True, word_embedding_size=300,
+    pretrained_embedding="", word_embedding_size=300,
     maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=15
+    gen_confusion_matrix=True, early_stopping_patience=-1
     )
     
 model_name = "task2"
 BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train2], [y_test2], [ind2label2],
-    validation=True, X_valid=X_validation, y_valid=[y_valid1],
-    pretrained_embedding=True, word_embedding_size=300,
+    validation=True, X_valid=X_validation, y_valid=[y_valid2],
+    pretrained_embedding="", word_embedding_size=300,
     maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=15
+    gen_confusion_matrix=True, early_stopping_patience=-1
     )
     
 model_name = "task3"
@@ -101,10 +100,10 @@ BiLSTM_model(model_name, True, "crf",
     X_training, X_testing, word2ind, maxWords,
     [y_train3], [y_test3], [ind2label3],
     validation=True, X_valid=X_validation, y_valid=[y_valid3],
-    pretrained_embedding=True, word_embedding_size=300,
+    pretrained_embedding="", word_embedding_size=300,
     maxChar=maxChar, char_embedding_type="BILSTM", char2ind=char2ind, char_embedding_size=100,
     lstm_hidden=lstm_size, nbr_epochs=epoch, batch_size=batch, dropout=dropout,
-    gen_confusion_matrix=True, early_stopping_patience=15
+    gen_confusion_matrix=True, early_stopping_patience=-1
     )
 
 

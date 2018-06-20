@@ -41,7 +41,7 @@ def BiLSTM_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label,
               lstm_hidden=32, dropout=0.5, optimizer='rmsprop',
               train = False, X_train = None, y_train = None, X_test = None, y_test = None,
               nbr_epochs = 1, batch_size=128, early_stopping_patience=-1,
-              folder_path="BiLSTM_results", score_name = "uncertainty_scores",
+              folder_path="BiLSTM_results", score_name = "uncertainty_scores", print_to_file = True
             ):   
     """
         The function computes, for each input token, three uncertainty sampling scores: probability, margin, entropy.
@@ -72,6 +72,7 @@ def BiLSTM_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label,
         :param X_i: Data to score, given in the indexed format of encodePadData_x function (in utils.py).
         :param y: Labels of the data to score, given in the original word format of load_data function (in utils.py).
         :param folder_path: Path to the directory storing all to-be-generated files and folders.
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :param score_name: Name of the file with the scores.
         :see Please for the other parameters refer to BiLSTM_model function in models.py (identical parameters are named the same).
         
@@ -92,7 +93,7 @@ def BiLSTM_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label,
               maxChar = maxChar, char_embedding_type = char_embedding_type, char2ind = char2ind, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, batch_size = batch_size, dropout = dropout, optimizer = optimizer, 
               nbr_epochs = nbr_epochs, early_stopping_patience = early_stopping_patience,
-              folder_path = folder_path, gen_confusion_matrix = False, return_model = True
+              folder_path = folder_path, gen_confusion_matrix = False, return_model = True, print_to_file = print_to_file
             )   
             
     # HACK: optmizer weight length issue
@@ -182,7 +183,7 @@ def BiLSTM_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label,
 def CNN_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label, maxChar, char2ind, 
               pretrained_embedding="", word_embedding_size=100,
               char_embedding_size=50, lstm_hidden=32, dropout=0.5, optimizer='rmsprop',
-              folder_path="CNN_results", score_name = "scores",
+              folder_path="CNN_results", score_name = "scores", print_to_file = True,
               train = False, X_train = None, y_train = None, X_test = None, y_test = None,
               nbr_epochs = 5, batch_size=128, early_stopping_patience=-1):   
     """
@@ -198,6 +199,7 @@ def CNN_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label, maxChar, cha
         :param y: Labels of the data to score, given in the original word format of load_data function (in utils.py).
         :param folder_path: Path to the directory storing all to-be-generated files and folders.
         :param score_name: Name of the file with the scores.
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :see Please for the other parameters refer to BiLSTM_model function in models.py (identical parameters are named the same).
         
         :return void
@@ -216,7 +218,7 @@ def CNN_score(filename, X_w, X_i, y, word2ind, maxWords, ind2label, maxChar, cha
               pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, nbr_epochs = nbr_epochs, batch_size = batch_size, dropout = dropout, 
               optimizer= optimizer, early_stopping_patience=-1,
-              folder_path=folder_path, gen_confusion_matrix=False, return_model = True
+              folder_path=folder_path, gen_confusion_matrix=False, return_model = True, print_to_file = print_to_file
              )
         
     # HACK: optmizer weight length issue
@@ -311,7 +313,7 @@ def BiLSTM_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords,
               lstm_hidden=32, dropout=0.5, optimizer='rmsprop',
               train = False, X_train = None, y_train = None, X_test = None, y_test = None,
               nbr_epochs = 1, batch_size=128, early_stopping_patience=-1,
-              folder_path="BiLSTM_results"
+              folder_path="BiLSTM_results", print_to_file = True
             ):   
     """
         The function selects references from the dataset according to their entropy uncertainy sampling score.
@@ -333,6 +335,7 @@ def BiLSTM_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords,
         :param verbose: if True, and write_to_disk is True, store entropy scores and target label along with the tokens.
         :param task: for which task the function is querying. Effective only if write_to_disk is True. Must be a value between 1 and 3.
         :param folder_path: Path to the directory storing all to-be-generated files and folders.
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :see Please for the other parameters refer to BiLSTM_model function in models.py (identical parameters are named the same).
         
         :return Indices of the queried references.
@@ -353,7 +356,7 @@ def BiLSTM_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords,
               maxChar = maxChar, char_embedding_type = char_embedding_type, char2ind = char2ind, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, batch_size = batch_size, dropout = dropout, optimizer = optimizer, 
               nbr_epochs = nbr_epochs, early_stopping_patience = early_stopping_patience,
-              folder_path = folder_path, gen_confusion_matrix = False, return_model = True
+              folder_path = folder_path, gen_confusion_matrix = False, return_model = True, print_to_file = print_to_file
             )   
         
     # HACK: optmizer weight length issue
@@ -477,7 +480,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
               pretrained_embedding="", word_embedding_size=100, char_embedding_size=50, 
               lstm_hidden=32, dropout=0.5, optimizer='rmsprop',
               train = False, X_train = None, y_train = None, X_test = None, y_test = None,
-              nbr_epochs = 5, batch_size=128, early_stopping_patience=-1, folder_path="CNN_results"
+              nbr_epochs = 5, batch_size=128, early_stopping_patience=-1, folder_path="CNN_results", print_to_file = True
              ):
     """
         The function selects references from the dataset according to their entropy uncertainy sampling score.
@@ -501,6 +504,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
         :param verbose: if True, and write_to_disk is True, store entropy scores and target label along with the tokens.
         :param task: for which task the function is querying. Effective only if write_to_disk is True. Must be a value between 1 and 3.
         :param folder_path: Path to the directory storing all to-be-generated files and folders.
+        :param print_to_file: if True redirects the printings to a file (given in filename), if False std_out is kept
         :see Please for the other parameters refer to BiLSTM_model function in models.py (identical parameters are named the same).
         
         :return indices of the queried references.
@@ -518,7 +522,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
               pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, char_embedding_size = char_embedding_size,
               lstm_hidden = lstm_hidden, nbr_epochs = nbr_epochs, batch_size = batch_size, dropout = dropout, 
               optimizer= optimizer, early_stopping_patience=-1,
-              folder_path=folder_path, gen_confusion_matrix=False, return_model = True
+              folder_path=folder_path, gen_confusion_matrix=False, return_model = True, print_to_file = print_to_file
              )
     
     # HACK: optmizer weight length issue
@@ -652,7 +656,7 @@ def CNN_query(filename, X_w, X_i, y, numSeqToQuery, mode, word2ind, maxWords, in
     
 def CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train_w, y_test_w, y_valid_w, tag_init_min_th, nbr_iters, 
                     nbr_epochs, query_mode, inc_perc = 0.03, word_embedding_size = 100, 
-                    char_embedding_size = 50, pretrained_embedding="", folder_path="active_results", store_models = False):
+                    char_embedding_size = 50, pretrained_embedding="", folder_path="active_model", store_models = False):
     
     """
         Active learning platform, which does multiple training cycles.
@@ -819,7 +823,7 @@ def CNN_ActiveModel(task, X_train_w, X_test_w, X_valid_w, y_train_w, y_test_w, y
                                    word2ind, maxWords, [ind2label], maxChar, char2ind,
                                    pretrained_embedding = pretrained_embedding, word_embedding_size = word_embedding_size, 
                                    char_embedding_size = char_embedding_size, optimizer='rmsprop', write_to_disk = False, 
-                                   folder_path=folder_path)
+                                   folder_path=folder_path, print_to_file = False)
                                    
         # I don't need weights anymore
         # TODO: find a way to avoid writing/deletion on disk
